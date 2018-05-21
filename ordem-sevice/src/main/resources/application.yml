@@ -1,0 +1,35 @@
+server:
+  port: 3001
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:file:~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  cloud:
+    stream:
+      management:
+        health:
+          binders:
+            enabled: true
+      bindings:
+        produto-sink:
+          destination: queue.domain-events.produto-sink
+          binder: local_rabbit
+          group: ordem-service
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
